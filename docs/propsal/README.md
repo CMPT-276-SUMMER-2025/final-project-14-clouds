@@ -2,6 +2,13 @@
 Project Propsal Report
 [link to pdf version](Project%20proposal%20report.pdf)
 
+### AI disclosures.
+Daniel: [link to M0 disclosure](M0/M0_AI_Declaration_Daniel_Erickson_301562823.pdf) <br>
+Gurdit: [link to M0 disclosure]() <br>
+Isaac: [link to M0 disclosure](M0/M0_AI_Declaration_Isaac_Jones_301606209.pdf) <br>
+Chris: [link to M0 disclosure](M0/M0_AI_Declaration_Man_Pok_Leung_301561885.pdf) <br>
+
+
 ## Overview of the project and the problem it aims to solve
 Our Translink bus tracker helps Vancouver residents easily figure out bus schedules, unlike Google Maps, which will only give results for entire trip calculations. Our website gives you the raw information. The main issue we hope to solve is that most residents already know what buses they want to catch, and most of us know of alternative routes to reach the same destination; the only problem is that Google Maps does not account for that. By giving the raw information on exactly what time a bus will arrive, it allows the user to make the best decision, instead of relying on some algorithm Google designed.
 
@@ -106,4 +113,4 @@ Web hosting platforms
 - Vercel
 
 ## Explanation of chosen stack technology
-As a team, we chose to use Tailwind CSS and React.js for our UI framework. We chose these mostly due to the fact that they were the most used and most documented. We try to keep things simple, our website isn’t going to be groundbreaking by any standard, so we chose to keep things as straightforward as possible, and React.js is by far the most popular frontend framework. We also chose to pair Tailwind CSS with React, to speed up our front-end development. As our website is mostly frontend-focused, and we will have almost no backend, we chose to use Cypress as our testing framework, as Cypress is focused on front-end testing, and excels in end-to-end tests, which is more important to us. Our CI/CD pipeline consists of GitHub Actions. For us, GitHub Actions was a no-brainer, especially since we plan on initially hosting our website on GitHub, and GitHub Actions is built into GitHub, simplifying our process. We are still unsure about our web hosting platform, as we don’t fully plan on adding ads to our website and currently, with our translink API key, we are limited to 1000 requests per day, so having a public website would not be feasible. However that being said, Vercel excels in frontend-heavy applications, and our website will be very frontend heavy, with almost no backend.
+As a team, we chose to use Tailwind CSS and React.js for our UI framework. We chose these mostly due to the fact that they were the most used and most documented. We try to keep things simple, our website isn’t going to be groundbreaking by any standard, so we chose to keep things as straightforward as possible, and React.js is by far the most popular frontend framework. We also chose to pair Tailwind CSS with React, to speed up our front-end development. As our website is mostly frontend-focused, and we will have almost no backend, we chose to use Cypress as our testing framework, as Cypress is focused on front-end testing, and excels in end-to-end tests, which is more important to us. Our CI/CD pipeline consists of GitHub Actions. For us, GitHub Actions was a no-brainer, especially since we plan on initially hosting our website on GitHub, and GitHub Actions is built into GitHub, simplifying our process. We are still unsure about our web hosting platform, as we don’t fully plan on adding ads to our website and currently, with our translink API key, we are limited to 1000 requests per day, so having a public website would not be feasible. However that being said, Vercel excels in frontend-heavy applications, and our website will be very frontend heavy, with almost no backend. Furthermore, Vercel is a free web hosting platform.
