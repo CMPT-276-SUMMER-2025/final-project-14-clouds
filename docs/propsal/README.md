@@ -3,10 +3,10 @@ Project Propsal Report
 [link to pdf version](Project%20proposal%20report.pdf)
 
 ### AI disclosures.
-Daniel: [link to M0 disclosure](M0/M0_AI_Declaration_Daniel_Erickson_301562823.pdf) <br>
-Gurdit: [link to M0 disclosure](M0/M0_AI_Declaration_Gurdit_Virk_301563062.pdf) <br>
-Isaac: [link to M0 disclosure](M0/M0_AI_Declaration_Isaac_Jones_301606209.pdf) <br>
-Chris: [link to M0 disclosure](M0/M0_AI_Declaration_Man_Pok_Leung_301561885.pdf) <br>
+Daniel: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Daniel_Erickson_301562823.pdf) <br>
+Gurdit: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Gurdit_Virk_301563062.pdf) <br>
+Isaac: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Isaac_Jones_301606209.pdf) <br>
+Chris: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Man_Pok_Leung_301561885.pdf) <br>
 
 
 ## Overview of the project and the problem it aims to solve
