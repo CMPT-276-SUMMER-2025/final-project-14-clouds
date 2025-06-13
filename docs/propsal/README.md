@@ -98,10 +98,11 @@ UI framework
 
 Testing Framework
 - Cypress
-- CI/CD pipeline 
 
-Github Actions
-- Web hosting platforms
+CI/CD pipeline 
+- Github Actions
+
+Web hosting platforms
 - Render or Vercal
 
 ## Explanation of chosen stack technology
