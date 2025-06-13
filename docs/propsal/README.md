@@ -2,13 +2,6 @@
 Project Propsal Report
 [link to pdf version](Project%20proposal%20report.pdf)
 
-### AI disclosures.
-Daniel: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Daniel_Erickson_301562823.pdf) <br>
-Gurdit: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Gurdit_Virk_301563062.pdf) <br>
-Isaac: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Isaac_Jones_301606209.pdf) <br>
-Chris: [link to M0 disclosure](ai-disclosures/M0/M0_AI_Declaration_Man_Pok_Leung_301561885.pdf) <br>
-
-
 ## Overview of the project and the problem it aims to solve
 Our Translink bus tracker helps Vancouver residents easily figure out bus schedules, unlike Google Maps, which will only give results for entire trip calculations. Our website gives you the raw information. The main issue we hope to solve is that most residents already know what buses they want to catch, and most of us know of alternative routes to reach the same destination; the only problem is that Google Maps does not account for that. By giving the raw information on exactly what time a bus will arrive, it allows the user to make the best decision, instead of relying on some algorithm Google designed.
 
