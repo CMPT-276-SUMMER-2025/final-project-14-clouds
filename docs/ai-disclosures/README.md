@@ -11,3 +11,6 @@ Daniel: [link to M1 disclosure](M1/M1_AI_Declaration_Daniel_Erickson_301562823.p
 Gurdit: [link to M1 disclosure](M1/M1_AI_Declaration_Gurdit_Virk_301563062.pdf) <br>
 Isaac: [link to M1 disclosure](M1/M1_AI_Declaration_Isaac_Jones_301606209.pdf) <br>
 Chris: [link to M1 disclosure](M1/M1_AI_Declaration_Man_Pok_Leung_301561885.pdf) <br>
+
+## Milestone 1 Video
+Group: [link to M1 Video disclosure](M1_Video/M1_Video_AI_Declaration_Daniel_Erickson_301562823.pdf) <br>
