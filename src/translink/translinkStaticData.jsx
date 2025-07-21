@@ -4,6 +4,8 @@ import { parseCSV } from "../translink/Utils"
 // internal cache, prob not the best way to do this, but good enough for now
 let stopCache = {};
 let routeCache = {};
+let stopTimesCache = [];
+let tripsCache = {};
 
 // cache all stop information
 async function loadStops() {
@@ -41,9 +43,47 @@ async function loadRoutes() {
   });
 }
 
+// cache all stop time information
+async function loadStopTimes() {
+  if (Object.keys(stopCache).length > 0) return;
+
+  const res = await fetch("/translink_data/stop_times.txt");
+  const text = await res.text();
+  const parsed = parseCSV(text);
+
+  parsed.forEach(stop => {
+    stopTimesCache.push ({
+      trip_id: stop.trip_id,
+      arrival_time: stop.arrival_time,
+      stop_id: stop.stop_id
+    });
+  });
+}
+
+// cache all trips information
+async function loadTrips() {
+  if (Object.keys(stopCache).length > 0) return;
+
+  const res = await fetch("/translink_data/trips.txt");
+  const text = await res.text();
+  const parsed = parseCSV(text);
+
+  parsed.forEach(trip => {
+    tripsCache[trip.route_id] = {
+      route_id: trip.route_id,
+      trip_id: trip.trip_id
+    };
+  });
+}
+
+// helper function to be added later, if we only want future times to be returned
+function isTimeInFuture(timeString) {
+  return true;
+}
+
 // cache both datasets in parallel
 export async function preloadGTFSData() {
-  await Promise.all([loadStops(), loadRoutes()]);
+  await Promise.all([loadStops(), loadRoutes(), loadStopTimes(), loadTrips()]);
 }
 
 // for some reason, the bus stop ID is not what they use internally, so we need a helper function to convert the bus id (StopCode) to the internally used StopID
@@ -94,4 +134,56 @@ export function getAllRoutes() {
     route_id: route.route_id,
     route_long_name: route.route_long_name
   }));
+}
+
+// returns future bus times & stop_id for a specific route
+export function getRouteTimes(routeId) {
+  const times = [];
+
+  const searched_trip_id = tripsCache[routeId].trip_id;
+
+  if (!searched_trip_id) 
+    return times;
+
+  // for each trip, find all stop times
+  const stopTimes = stopTimesCache.filter(st => st.trip_id === searched_trip_id);
+
+  stopTimes.forEach(stopTime => {
+    if (isTimeInFuture(stopTime.arrival_time)) {
+      times.push({
+        arrival_time: stopTime.arrival_time,
+        stop_id: stopTime.stop_id
+      });
+    }
+  });
+
+  return times.sort((a, b) => a.arrival_time.localeCompare(b.arrival_time));
+}
+
+// returns future bus times for a specific stop with route information
+export function getStopTimes(stopId) {
+  const times = [];
+  
+  // find all stop times for this stop
+  const stopTimes = stopTimesCache.filter(st => st.stop_id === stopId);
+  
+  console.log(`Debug: Found ${stopTimes.length} stop times for stop ${stopId}`);
+
+  stopTimes.forEach(stopTime => {
+    if (isTimeInFuture(stopTime.arrival_time)) {
+      const trip = Object.values(tripsCache).find(t => t.trip_id === stopTime.trip_id);
+      if (trip) {
+        const route = routeCache[trip.route_id];
+        times.push({
+          arrival_time: stopTime.arrival_time,
+          route_id: trip.route_id,
+          route_short_name: route?.route_short_name || null,
+          route_long_name: route?.route_long_name || null,
+        });
+      }
+    }
+  });
+  
+  // Sort by arrival time
+  return times.sort((a, b) => a.arrival_time.localeCompare(b.arrival_time));
 }
