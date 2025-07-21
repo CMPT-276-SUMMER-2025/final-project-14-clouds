@@ -77,3 +77,21 @@ export function convertRouteShortNameToRouteID(shortName) {
 export function getRouteLongName(routeID) {
   return routeCache[routeID]?.route_long_name || null;
 }
+
+// returns a list of all bus stops with their stop_code, stop_id, and stop_name, eg 61857 <- real bus stop code, 12000 <- internal bus stop id, "Southbound 190A St @ 119B Ave"
+export function getAllStops() {
+  return Object.values(stopCache).map(stop => ({
+    stop_code: stop.stop_code,
+    stop_id: stop.stop_id,
+    stop_name: stop.stop_name
+  }));
+}
+
+// returns a list of all routes with their route_short_name, route_id, route_long_name, eg 183, 30046 (internal), "Moody Centre Station/Coquitlam Central Station"
+export function getAllRoutes() {
+  return Object.values(routeCache).map(route => ({
+    route_short_name: route.route_short_name,
+    route_id: route.route_id,
+    route_long_name: route.route_long_name
+  }));
+}
