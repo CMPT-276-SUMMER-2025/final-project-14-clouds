@@ -4,7 +4,7 @@ import './App.css'
 
 export default function App() {
   return (
-    <main className="h-screen">
+    <main className="w-full h-full">
       <Home />
     </main>
   );

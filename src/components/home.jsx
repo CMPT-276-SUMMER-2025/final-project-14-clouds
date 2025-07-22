@@ -3,7 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MAPBOX_TOKEN } from "../config";
 
-// Fix Leaflet’s default icon URLs under Vite
+// Fixes Leaflet’s default icon URLs under Vite
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: new URL(
@@ -20,7 +20,7 @@ L.Icon.Default.mergeOptions({
 
 export default function Home() {
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-full ">
       {/* Mapbox raster tiles using Leaflet so no WebGL needed */}
       <MapContainer
         center={[49.26015840394259, -123.11498748675584]} 
