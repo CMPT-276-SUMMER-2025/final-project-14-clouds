@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "fuse.js": "^7.1.0",
+    "gtfs-realtime-bindings": "^1.1.1",
     "@heroicons/react": "^2.2.0",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.13.0",
