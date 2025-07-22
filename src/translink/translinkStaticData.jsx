@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { parseCSV } from "../translink/Utils"
 
 // internal cache, prob not the best way to do this, but good enough for now
-let stopCache = {};
-let routeCache = {};
+export let stopCache = {};
+export let routeCache = {};
 let stopTimesCache = [];
 let tripsCache = {};
 
@@ -167,8 +167,6 @@ export function getStopTimes(stopId) {
   // find all stop times for this stop
   const stopTimes = stopTimesCache.filter(st => st.stop_id === stopId);
   
-  console.log(`Debug: Found ${stopTimes.length} stop times for stop ${stopId}`);
-
   stopTimes.forEach(stopTime => {
     if (isTimeInFuture(stopTime.arrival_time)) {
       const trip = Object.values(tripsCache).find(t => t.trip_id === stopTime.trip_id);
