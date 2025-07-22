@@ -113,6 +113,12 @@ export function convertRouteShortNameToRouteID(shortName) {
   return null;
 }
 
+// gets the bus short name, 30046 -> 183
+export function getBusName(routeId) {
+  const route = routeCache[routeId];
+  return route?.route_short_name || 'Unknown';
+}
+
 // returns the bus name, eg 30046 (real bus id 183) -> Moody Centre Station/Coquitlam Central Station
 export function getRouteLongName(routeID) {
   return routeCache[routeID]?.route_long_name || null;
@@ -123,7 +129,9 @@ export function getAllStops() {
   return Object.values(stopCache).map(stop => ({
     stop_code: stop.stop_code,
     stop_id: stop.stop_id,
-    stop_name: stop.stop_name
+    stop_name: stop.stop_name,
+    stop_lat: stop.stop_lat,
+    stop_lon: stop.stop_lon
   }));
 }
 

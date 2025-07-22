@@ -6,7 +6,7 @@ import { MAPBOX_TOKEN } from "../config";
 import { searchStopsAndRoutes, preloadCache } from "../translink/Utils";
 import { preloadGTFSData } from "../translink/translinkStaticData";
 import { useEffect, useState } from 'react'
-
+import { BusStops } from "./busStops";
 
 
 const DEFAULT_CENTER = [49.26015840394259, -123.11498748675584];
@@ -53,7 +53,6 @@ function MapControls() {
     </div>
   );
 }
-
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -159,12 +158,15 @@ function SearchBar() {
 
 
 export default function Home() {
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   // preload our caches, and only once
   useEffect(() => {
     const loadData = async () => {
       try {
         await preloadGTFSData();
         await preloadCache();
+        setDataLoaded(true);
       } catch (error) {
         console.error('Error preloading data:', error);
       }
@@ -188,6 +190,7 @@ export default function Home() {
           attribution='© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © OpenStreetMap'
         />
         <MapControls />
+        <BusStops dataLoaded={dataLoaded} />
       </MapContainer>
       
 
