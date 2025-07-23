@@ -42,12 +42,26 @@ function MapControls() {
       {/* Geolocate */}
       <button
         onClick={() => {
-          map.locate({ setView: true, maxZoom: DEFAULT_ZOOM });
-        }}
-        className="bg-black/75 p-6 rounded-full shadow-lg hover:outline-none hover:ring-3 hover:ring-blue-500"
-      >
-        <MapPinIcon className="w-12 h-12 text-gray-300" />
-      </button>
+          map.locate({ setView: false, maxZoom: DEFAULT_ZOOM });
+
+          map.once("locationfound", (e) => {
+          map.setView(e.latlng, DEFAULT_ZOOM);
+
+          L.marker(e.latlng).addTo(map);
+          L.circle(e.latlng, { radius: 100 }).addTo(map);
+          L.popup().setLatLng(e.latlng).setContent("You are here!").openOn(map);
+        });
+
+          map.once("locationerror", (e) => {
+          console.error("Location error:", e.message);
+          alert("Unable to find your location. Please enable location services.");
+      });
+
+  }}
+  className="bg-black/75 p-6 rounded-full shadow-lg hover:outline-none hover:ring-3 hover:ring-blue-500"
+>
+  <MapPinIcon className="w-12 h-12 text-gray-300" />
+</button>
     </div>
   );
 }
