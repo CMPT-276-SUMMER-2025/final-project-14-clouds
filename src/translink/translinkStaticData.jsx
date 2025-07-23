@@ -76,11 +76,6 @@ async function loadTrips() {
   });
 }
 
-// helper function to be added later, if we only want future times to be returned
-function isTimeInFuture(timeString) {
-  return true;
-}
-
 // cache both datasets in parallel
 export async function preloadGTFSData() {
   await Promise.all([loadStops(), loadRoutes(), loadStopTimes(), loadTrips()]);
@@ -157,12 +152,10 @@ export function getRouteTimes(routeId) {
   const stopTimes = stopTimesCache.filter(st => st.trip_id === searched_trip_id);
 
   stopTimes.forEach(stopTime => {
-    if (isTimeInFuture(stopTime.arrival_time)) {
-      times.push({
-        arrival_time: stopTime.arrival_time,
-        stop_id: stopTime.stop_id
-      });
-    }
+    times.push({
+      arrival_time: stopTime.arrival_time,
+      stop_id: stopTime.stop_id
+    });
   });
 
   return times.sort((a, b) => a.arrival_time.localeCompare(b.arrival_time));
@@ -176,17 +169,16 @@ export function getStopTimes(stopId) {
   const stopTimes = stopTimesCache.filter(st => st.stop_id === stopId);
   
   stopTimes.forEach(stopTime => {
-    if (isTimeInFuture(stopTime.arrival_time)) {
-      const trip = Object.values(tripsCache).find(t => t.trip_id === stopTime.trip_id);
-      if (trip) {
-        const route = routeCache[trip.route_id];
-        times.push({
-          arrival_time: stopTime.arrival_time,
-          route_id: trip.route_id,
-          route_short_name: route?.route_short_name || null,
-          route_long_name: route?.route_long_name || null,
-        });
-      }
+    const trip = Object.values(tripsCache).find(t => t.trip_id === stopTime.trip_id);
+    if (trip) {
+      const route = routeCache[trip.route_id];
+      console.log(stopTime.arrival_time);
+      times.push({
+        arrival_time: stopTime.arrival_time,
+        route_id: trip.route_id,
+        route_short_name: route?.route_short_name || null,
+        route_long_name: route?.route_long_name || null,
+      });
     }
   });
   

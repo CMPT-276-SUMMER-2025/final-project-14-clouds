@@ -2,7 +2,7 @@ import { Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { getAllStops, getStopTimes, getBusName } from '../translink/translinkStaticData';
+import { getAllStops, getStopTimes, getBusName, getRouteLongName } from '../translink/translinkStaticData';
 import { getNextBusesForStop } from '../translink/translinkAPI';
 
 // TEMP ICON
@@ -27,15 +27,21 @@ function BusStopPopup({ stopId, stopName }) {
     setLoading(true);
     // check API first, if nothing is returned, default on static data
     let result = await getNextBusesForStop(stopId);
+    console.log(result)
 
     // defaulting to static data
     if (!result || result.length === 0) {
+      // get today's date, static data doesn't have todays current date, so we just manually add that
+      const today = new Date();
+
       result = getStopTimes(stopId).map((item) => ({
-        arrival_time: new Date(item.arrival_time),
+        arrival_time: new Date(`${today.toISOString().split('T')[0]}T${item.arrival_time}`),
         route_short_name: item.route_short_name || '',
         route_long_name: item.route_long_name || '',
       }));
     }
+
+    console.log(result)
 
     // convert times to date
     result = result.map((r) => ({
@@ -93,13 +99,11 @@ function BusStopPopup({ stopId, stopName }) {
             >
               <div className="flex flex-col">
                 <span className="bg-blue-500/20 text-blue-300 font-medium px-2 py-0.5 rounded-full text-xs inline-block w-fit">
-                  {getBusName(arrival.route_id)}
+                  {arrival?.route_short_name || getBusName(arrival.route_id)}
                 </span>
-                {arrival.route_long_name && (
-                  <span className="text-gray-400 text-xs truncate max-w-[150px]">
-                    {arrival.route_long_name}
-                  </span>
-                )}
+                <span className="text-gray-400 text-xs truncate max-w-[150px]">
+                  {arrival?.route_long_name || getRouteLongName(arrival.route_id)}
+                </span>
               </div>
               <div className="flex flex-col text-right">
                 <span className="text-white text-sm font-semibold">
