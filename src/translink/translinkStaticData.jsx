@@ -94,6 +94,11 @@ export function getStopName(stopID) {
   return stopCache[stopID]?.stop_name || null;
 }
 
+// gets the stop code, the code we actually see on bus stops
+export function getStopCode(stopID) {
+  return stopCache[stopID]?.stop_code || null;
+}
+
 // returns the { lat, long } of bus stop, used for mapping
 export function getStopLocation(stopID) {
   const stop = stopCache[stopID];
