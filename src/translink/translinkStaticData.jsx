@@ -172,7 +172,6 @@ export function getStopTimes(stopId) {
     const trip = Object.values(tripsCache).find(t => t.trip_id === stopTime.trip_id);
     if (trip) {
       const route = routeCache[trip.route_id];
-      console.log(stopTime.arrival_time);
       times.push({
         arrival_time: stopTime.arrival_time,
         route_id: trip.route_id,

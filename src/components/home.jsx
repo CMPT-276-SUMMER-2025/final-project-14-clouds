@@ -6,7 +6,7 @@ import { MAPBOX_TOKEN } from "../config";
 import { searchStopsAndRoutes, preloadCache } from "../translink/Utils";
 import { preloadGTFSData } from "../translink/translinkStaticData";
 import { useEffect, useState } from 'react'
-import { BusStops } from "./busStops";
+import { BusStops, BusStopPopup } from "./busStops";
 
 
 const DEFAULT_CENTER = [49.26015840394259, -123.11498748675584];
@@ -58,6 +58,7 @@ function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [selectedStop, setSelectedStop] = useState(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -84,10 +85,15 @@ function SearchBar() {
   };
 
   const handleResultClick = (result) => {
-    // TODO
-    console.log(result.id)
-    console.log(result.name)
-    console.log(result.type)
+    setShowResults(false);
+
+    if (result.type === 'stop_code') {
+      setSelectedStop({
+        enabled: true,
+        stopId: result.internal_id,
+        stopName: result.name
+      });
+    }
   };
 
   const handleFocus = () => {
@@ -150,6 +156,13 @@ function SearchBar() {
           <div className="text-gray-400 text-center">
             No results found for "{searchTerm}"
           </div>
+        </div>
+      )}
+
+      {/* bus stop results */}
+      {selectedStop?.enabled && !showResults && results.length > 0 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-transparent z-50">
+          <BusStopPopup stopId={selectedStop.stopId} stopName={selectedStop.stopName} />
         </div>
       )}
     </div>

@@ -18,7 +18,7 @@ const busStopIcon = new L.divIcon({
   popupAnchor: [0, -32],
 });
 
-function BusStopPopup({ stopId, stopName }) {
+export function BusStopPopup({ stopId, stopName }) {
   const [arrivals, setArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
@@ -27,7 +27,6 @@ function BusStopPopup({ stopId, stopName }) {
     setLoading(true);
     // check API first, if nothing is returned, default on static data
     let result = await getNextBusesForStop(stopId);
-    console.log(result)
 
     // defaulting to static data
     if (!result || result.length === 0) {
@@ -41,7 +40,6 @@ function BusStopPopup({ stopId, stopName }) {
       }));
     }
 
-    console.log(result)
 
     // convert times to date
     result = result.map((r) => ({
@@ -70,7 +68,7 @@ function BusStopPopup({ stopId, stopName }) {
   };
 
   return (
-    <div className="bg-black/90 rounded-lg shadow-lg text-white text-sm p-3 space-y-2 min-w-[220px] max-w-[300px]">
+    <div className="bg-black/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-700 overflow-hidden text-white text-sm p-3 space-y-2 min-w-[220px] max-w-[300px]">
       <div className="flex justify-between items-center">
         <div>
           <div className="font-semibold text-base text-white">{stopName}</div>
