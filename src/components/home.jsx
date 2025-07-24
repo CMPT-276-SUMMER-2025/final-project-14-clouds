@@ -11,7 +11,7 @@ import { RouteStopPopup } from "./routeData";
 
 
 const DEFAULT_CENTER = [49.26015840394259, -123.11498748675584];
-const DEFAULT_ZOOM   = 13;
+const DEFAULT_ZOOM   = 15;
 
 // Fixes Leaflet’s default icon URLs under Vite
 delete L.Icon.Default.prototype._getIconUrl;
