@@ -1,9 +1,10 @@
 import { Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { getAllStops, getStopTimes, getBusName, getRouteLongName } from '../translink/translinkStaticData';
 import { getNextBusesForStop } from '../translink/translinkAPI';
+import filterWorker from './filterWorker?worker'
 
 // TEMP ICON
 const busStopIcon = new L.divIcon({
@@ -127,7 +128,8 @@ export function BusStops({ dataLoaded }) {
   const [allStops, setAllStops] = useState([]);
   const [visibleStops, setVisibleStops] = useState([]);
   const map = useMap();
-
+  const cachedStopIds = useRef(new Set());
+  
   // had a problem where data wasnt loaded and we tried to render, so this just makes sure its rendered before we draw
   useEffect(() => {
     if (!dataLoaded) return;
@@ -139,31 +141,49 @@ export function BusStops({ dataLoaded }) {
       console.error('Error loading bus stops:', error);
     }
   }, [dataLoaded]);
-
+  
+  //rendering all the stops with ids and using web-workers for multi-threading
   useEffect(() => {
     if (!map || allStops.length === 0) return;
-
-    const updateVisibleStops = () => {
+    const worker = new filterWorker()
+    
+    const updateVisibleStops = async () => {
       const bounds = map.getBounds();
-      const filtered = allStops.filter(stop => {
-        return (
-          stop.stop_lat &&
-          stop.stop_lon &&
-          bounds.contains([stop.stop_lat, stop.stop_lon])
-        );
+      const formattedBounds = {
+        _southWest: bounds.getSouthWest(),
+        _northEast: bounds.getNorthEast(),
+      };
+      worker.postMessage({ stops: allStops, bounds: formattedBounds });
+    };
+
+    worker.onmessage = async (e) => {
+      const newVisibleStops = e.data;
+      const uniqueNewStops = await newVisibleStops.filter((stop) => {
+        if (cachedStopIds.current.has(stop.stop_id)) {
+          return false;
+        }
+        cachedStopIds.current.add(stop.stop_id);
+        return true;
       });
-      setVisibleStops(filtered);
+
+      // This will only update when there is a new id
+      if (uniqueNewStops.length > 0) {
+        setVisibleStops((prev) => [...prev, ...uniqueNewStops]);
+      }
     };
 
     updateVisibleStops();
     map.on('moveend', updateVisibleStops);
     return () => {
       map.off('moveend', updateVisibleStops);
+      worker.terminate();
     };
   }, [map, allStops]);
 
   if (visibleStops.length === 0) return null;
-
+  //At the first time when it loads, it will cause lag but if everything is loaded with cache then it will remain smooth performance
+  //The reason that is causing lag was because the list is too long for the .map function to work and everytime when the user moves it will re-render
+  //everything again. 
   return (
     <MarkerClusterGroup chunkedLoading>
       {visibleStops.map((stop) => (
