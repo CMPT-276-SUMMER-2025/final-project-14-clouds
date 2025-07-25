@@ -128,6 +128,7 @@ export function BusStops({ dataLoaded }) {
   const [allStops, setAllStops] = useState([]);
   const [visibleStops, setVisibleStops] = useState([]);
   const map = useMap();
+  map.setMinZoom(3);
   const cachedStopIds = useRef(new Set());
   
   // had a problem where data wasnt loaded and we tried to render, so this just makes sure its rendered before we draw
