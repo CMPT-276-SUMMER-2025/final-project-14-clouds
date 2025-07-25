@@ -25,4 +25,5 @@ jobs:
           MAPBOX_API: ${{ secrets.MAPBOX_API }}
           NOTIFICATION_API: ${{ secrets.NOTIFICATION_API }}
           TRANSLINK_API: ${{ secrets.TRANSLINK_API }}
-          
+        run: |
+          echo "API Keys"
