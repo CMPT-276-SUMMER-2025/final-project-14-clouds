@@ -8,6 +8,8 @@ import { preloadGTFSData } from "../translink/translinkStaticData";
 import { useEffect, useState } from 'react'
 import { BusStops, BusStopPopup } from "./busStops";
 import { RouteStopPopup } from "./routeData";
+import { NotificationAPIProvider, NotificationPopup } from '@notificationapi/react'
+import AskforPerm from './checkperms'
 
 
 const DEFAULT_CENTER = [49.26015840394259, -123.11498748675584];
@@ -229,6 +231,17 @@ export default function Home() {
         {/*  search bar overlay */}
       <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[1000]">
         <SearchBar />
+        <NotificationAPIProvider
+          userId="kris68008@gmail.com"
+          clientId="swb4o3lvct1xlz34ep6xeq8e4m"
+          apiURL= "api.ca.notificationapi.com"
+          wsURL= "ws.ca.notificationapi.com"
+          webPushOptInMessage={true} // Default is "Automatic" Can also use Boolean value
+          customServiceWorkerPath="/public/notificationapi-service-worker.js" //optional
+        >
+          <AskforPerm />
+          <NotificationPopup />
+        </NotificationAPIProvider>
       </div>
         
       </div>
