@@ -12,6 +12,7 @@ function NotificationButton() {
     };
     
     const sendNotification = async () => {
+    const msg = 'test message';
     try {
       const res = await fetch('http://localhost:3000/send-notification', {
         method: 'POST',
@@ -19,8 +20,8 @@ function NotificationButton() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          commentId: 'buttonClickTest',
-          email: 'kris68008@gmail.com'
+          id: 'kris68008@gmail.com',
+          msg: msg 
         })
       });
 
