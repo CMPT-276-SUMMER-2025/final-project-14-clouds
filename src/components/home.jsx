@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { BusStops, BusStopPopup } from "./busStops";
 import { RouteStopPopup } from "./routeData";
 import { NotificationAPIProvider, NotificationPopup } from '@notificationapi/react'
-import AskforPerm from './checkperms'
+import NotificationButton from './notifyButton'
 
 
 const DEFAULT_CENTER = [49.26015840394259, -123.11498748675584];
@@ -239,7 +239,7 @@ export default function Home() {
           webPushOptInMessage={true} // Default is "Automatic" Can also use Boolean value
           customServiceWorkerPath="/public/notificationapi-service-worker.js" //optional
         >
-          <AskforPerm />
+          <NotificationButton />
           <NotificationPopup />
         </NotificationAPIProvider>
       </div>
