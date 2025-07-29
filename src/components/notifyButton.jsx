@@ -30,6 +30,10 @@ function NotificationButton(schedule=None) {
     const msg = 'test message';
     const now = new Date();
     const time = now.toISOString();
+    const s = ''; 
+    if (schedule) {
+      s = schedule;
+    }
     console.log('schedule: ', time);
     try {
       const res = await fetch('http://localhost:3000/send-notification', {
@@ -40,7 +44,7 @@ function NotificationButton(schedule=None) {
         body: JSON.stringify({
           id: 'kris68008@gmail.com',
           msg: msg ,
-          schedule: ''
+          schedule: s
         })
       });
 
