@@ -2,19 +2,22 @@ import { NotificationAPIProvider } from '@notificationapi/react'
 import { useState } from 'react'
 import { IoMdNotifications, IoMdNotificationsOff } from "react-icons/io";
 import "./notifyButton.css";
-function NotificationButton(schedule=None) {
+function NotificationButton({busNumber, arrivalTime, arriveIn}) {
     const notificationapi = NotificationAPIProvider.useNotificationAPIContext();
     const [enabled, setEnabled] = useState(true);
     const [schedules, setSchdules] = useState([]);
+
     const checkPerms = () => {
     if (notificationapi) {
         notificationapi.setWebPushOptIn(true);
     }
-    const now = new Date();
-    const time = now.toISOString();
+    const time = arrivalTime.toISOString();
     setEnabled(prev => !prev);
     console.log('schedule: ', time);
     if (enabled) {
+      new Notification(`${busNumber} will arrive soon`, {
+                body: `Arriving ${arriveIn}`,
+              });
       sendNotification();
     } else {
       cancelNotification();
@@ -26,15 +29,10 @@ function NotificationButton(schedule=None) {
         console.log('removed schedule notification', trackingId)
       }
     }
-    const sendNotification = async (schedule) => {
-    const msg = 'test message';
-    const now = new Date();
-    const time = now.toISOString();
-    const s = ''; 
-    if (schedule) {
-      s = schedule;
-    }
-    console.log('schedule: ', time);
+    const sendNotification = async () => {
+    const msg = `${busNumber} arriving now!`;
+    const s = arrivalTime.toISOString() || '';
+    console.log('schedule: ', s, busNumber);
     try {
       const res = await fetch('http://localhost:3000/send-notification', {
         method: 'POST',
@@ -43,7 +41,7 @@ function NotificationButton(schedule=None) {
         },
         body: JSON.stringify({
           id: 'kris68008@gmail.com',
-          msg: msg ,
+          msg: msg || 'Bus arriving soon!' ,
           schedule: s
         })
       });

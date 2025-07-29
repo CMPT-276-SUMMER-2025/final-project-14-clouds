@@ -83,7 +83,7 @@ export function BusStopPopup({ stopId, stopName }) {
         >
           Refresh
         </button>
-        <NotificationButton />
+        
       </div>
 
       {loading && <div className="text-gray-400">Loading arrivals...</div>}
@@ -118,6 +118,10 @@ export function BusStopPopup({ stopId, stopName }) {
                   {getCountdown(arrival.arrival_time)}
                 </span>
               </div>
+              <NotificationButton 
+                busNumber={arrival?.route_short_name || getBusName(arrival.route_id)} 
+                arrivalTime={arrival.arrival_time} 
+                arriveIn={getCountdown(arrival.arrival_time)}/>
             </div>
           ))}
         </div>
