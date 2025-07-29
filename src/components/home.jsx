@@ -212,26 +212,7 @@ export default function Home() {
   return (
     <div className="relative w-full h-full ">
       {/* Mapbox raster tiles using Leaflet so no WebGL needed */}
-      <MapContainer
-        center={DEFAULT_CENTER} 
-        zoom={DEFAULT_ZOOM}
-        className="w-full h-full z-0"
-        
-      >
-
-        <TileLayer
-          url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`}
-          attribution='© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © OpenStreetMap'
-        />
-        <MapControls />
-        <BusStops dataLoaded={dataLoaded} />
-      </MapContainer>
-      
-
-        {/*  search bar overlay */}
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[1000]">
-        <SearchBar />
-        <NotificationAPIProvider
+      <NotificationAPIProvider
           userId="kris68008@gmail.com"
           clientId="swb4o3lvct1xlz34ep6xeq8e4m"
           apiURL= "api.ca.notificationapi.com"
@@ -239,11 +220,27 @@ export default function Home() {
           webPushOptInMessage={true} // Default is "Automatic" Can also use Boolean value
           customServiceWorkerPath="/public/notificationapi-service-worker.js" //optional
         >
-          <NotificationButton />
-          <NotificationPopup />
-        </NotificationAPIProvider>
-      </div>
+        <MapContainer
+          center={DEFAULT_CENTER} 
+          zoom={DEFAULT_ZOOM}
+          className="w-full h-full z-0"
+          
+        >
+
+          <TileLayer
+            url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`}
+            attribution='© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © OpenStreetMap'
+          />
+          <MapControls />
+          <BusStops dataLoaded={dataLoaded} />
+        </MapContainer>
         
+
+          {/*  search bar overlay */}
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[1000]">
+          <SearchBar />
+        </div>
+        </NotificationAPIProvider>
       </div>
       
 

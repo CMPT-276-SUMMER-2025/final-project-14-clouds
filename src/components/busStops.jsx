@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { getAllStops, getStopTimes, getBusName, getRouteLongName } from '../translink/translinkStaticData';
 import { getNextBusesForStop } from '../translink/translinkAPI';
 import filterWorker from './filterWorker?worker'
-
+import NotificationButton from './notifyButton'
 
 
 // TEMP ICON
@@ -57,7 +57,7 @@ export function BusStopPopup({ stopId, stopName }) {
     setLastUpdated(Date.now());
     setLoading(false);
   };
-
+  
   useEffect(() => {
     refresh();
     const interval = setInterval(() => setLastUpdated(Date.now()), 30 * 1000);
@@ -83,6 +83,7 @@ export function BusStopPopup({ stopId, stopName }) {
         >
           Refresh
         </button>
+        <NotificationButton />
       </div>
 
       {loading && <div className="text-gray-400">Loading arrivals...</div>}

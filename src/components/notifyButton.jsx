@@ -1,18 +1,36 @@
-// App.jsx or NotificationButton.jsx
-import React from 'react';
 import { NotificationAPIProvider } from '@notificationapi/react'
-function NotificationButton() {
+import { useState } from 'react'
+import { IoMdNotifications, IoMdNotificationsOff } from "react-icons/io";
+import "./notifyButton.css";
+function NotificationButton(schedule=None) {
     const notificationapi = NotificationAPIProvider.useNotificationAPIContext();
-      
+    const [enabled, setEnabled] = useState(true);
+    const [schedules, setSchdules] = useState([]);
     const checkPerms = () => {
     if (notificationapi) {
         notificationapi.setWebPushOptIn(true);
     }
-    sendNotification();
+    const now = new Date();
+    const time = now.toISOString();
+    setEnabled(prev => !prev);
+    console.log('schedule: ', time);
+    if (enabled) {
+      sendNotification();
+    } else {
+      cancelNotification();
+    }
     };
-    
-    const sendNotification = async () => {
+    const cancelNotification = async (trackingId) => {
+      if(trackingId) {
+        notificationapi.deleteSchedule(trackingId);
+        console.log('removed schedule notification', trackingId)
+      }
+    }
+    const sendNotification = async (schedule) => {
     const msg = 'test message';
+    const now = new Date();
+    const time = now.toISOString();
+    console.log('schedule: ', time);
     try {
       const res = await fetch('http://localhost:3000/send-notification', {
         method: 'POST',
@@ -21,7 +39,8 @@ function NotificationButton() {
         },
         body: JSON.stringify({
           id: 'kris68008@gmail.com',
-          msg: msg 
+          msg: msg ,
+          schedule: ''
         })
       });
 
@@ -34,7 +53,7 @@ function NotificationButton() {
 
   return (
     <button onClick={checkPerms}>
-      Send Notification
+      {enabled ? <IoMdNotifications className="icon" size={20}/> : <IoMdNotificationsOff className="icon" size={20}/>}
     </button>
   );
 }
