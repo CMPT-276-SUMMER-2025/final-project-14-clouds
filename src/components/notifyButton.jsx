@@ -33,7 +33,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) {
     const s = arrivalTime.toISOString() || '';
     console.log('schedule: ', s, busNumber);
     try {
-      const res = await fetch('http://localhost:3000/send-notification', {
+      const res = await fetch('http://localhost:3000/send-notification', { //change link to this when hosting '/api/send-notification'
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
