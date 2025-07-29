@@ -13,14 +13,13 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) {
     }
     const time = arrivalTime.toISOString();
     setEnabled(prev => !prev);
-    console.log('schedule: ', time);
     if (enabled) {
       new Notification(`${busNumber} will arrive soon`, {
                 body: `Arriving ${arriveIn}`,
               });
       sendNotification();
     } else {
-      cancelNotification();
+      cancelNotification(schedules || '');
     }
     };
     const cancelNotification = async (trackingId) => {
@@ -48,6 +47,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) {
 
       const data = await res.json();
       console.log('Notification sent:', data);
+      setSchdules(data);
     } catch (err) {
       console.error('Error sending notification:', err);
     }

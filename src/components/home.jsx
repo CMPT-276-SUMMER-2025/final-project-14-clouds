@@ -218,7 +218,7 @@ export default function Home() {
           apiURL= "api.ca.notificationapi.com"
           wsURL= "ws.ca.notificationapi.com"
           webPushOptInMessage={true} // Default is "Automatic" Can also use Boolean value
-          customServiceWorkerPath="/public/notificationapi-service-worker.js" //optional
+          customServiceWorkerPath="/notificationapi-service-worker.js" //optional
         >
         <MapContainer
           center={DEFAULT_CENTER} 
