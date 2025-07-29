@@ -100,9 +100,15 @@ export function BusStopPopup({ stopId, stopName }) {
               className="flex justify-between items-center border-b border-gray-700 last:border-0 pb-1"
             >
               <div className="flex flex-col">
-                <span className="bg-blue-500/20 text-blue-300 font-medium px-2 py-0.5 rounded-full text-xs inline-block w-fit">
-                  {arrival?.route_short_name || getBusName(arrival.route_id)}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="bg-blue-500/20 text-blue-300 font-medium px-2 py-0.5 rounded-full text-xs inline-block w-fit">
+                    {arrival?.route_short_name || getBusName(arrival.route_id)}
+                  </span>
+                  <NotificationButton 
+                  busNumber={arrival?.route_short_name || getBusName(arrival.route_id)} 
+                  arrivalTime={arrival.arrival_time} 
+                  arriveIn={getCountdown(arrival.arrival_time)}/>
+                </div>
                 <span className="text-gray-400 text-xs truncate max-w-[150px]">
                   {arrival?.route_long_name || getRouteLongName(arrival.route_id)}
                 </span>
@@ -118,10 +124,6 @@ export function BusStopPopup({ stopId, stopName }) {
                   {getCountdown(arrival.arrival_time)}
                 </span>
               </div>
-              <NotificationButton 
-                busNumber={arrival?.route_short_name || getBusName(arrival.route_id)} 
-                arrivalTime={arrival.arrival_time} 
-                arriveIn={getCountdown(arrival.arrival_time)}/>
             </div>
           ))}
         </div>
