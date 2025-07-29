@@ -47,7 +47,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) {
 
       const data = await res.json();
       console.log('Notification sent:', data);
-      setSchdules(data);
+      setSchdules(data.trackingId);
     } catch (err) {
       console.error('Error sending notification:', err);
     }
