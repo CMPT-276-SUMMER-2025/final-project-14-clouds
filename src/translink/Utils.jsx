@@ -16,6 +16,7 @@ function buildSearchCache() {
         id: stop.stop_code,
         name: stop.stop_name,
         type: 'stop_code',
+        internal_id: stop.stop_id,
       });
     }
   });
@@ -27,6 +28,7 @@ function buildSearchCache() {
         id: route.route_short_name,
         name: route.route_long_name,
         type: 'route_short_name',
+        internal_id: route.route_id,
       });
     }
   });
