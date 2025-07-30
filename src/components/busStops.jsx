@@ -1,5 +1,5 @@
 import { Marker, Popup } from 'react-leaflet';
-import MarkerClusterGroup from 'react-leaflet-cluster';
+import MarkerClusterGroup from "react-leaflet-markercluster";
 import { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { getAllStops, getStopTimes, getBusName, getRouteLongName } from '../translink/translinkStaticData';
