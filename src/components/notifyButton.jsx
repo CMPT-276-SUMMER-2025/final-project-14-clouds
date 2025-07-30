@@ -25,7 +25,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) { //the notifica
     const cancelNotification = async (trackingId) => {
       if(trackingId) {
         try {
-        const send = await fetch('http://localhost:3000/cancel-notification', { //change link to this when hosting '/api/send-notification'
+        const send = await fetch('http://localhost:3000/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) { //the notifica
       const s = arrivalTime.toISOString() || '';
       console.log('schedule: ', s, busNumber);
       try {
-        const res = await fetch('http://localhost:3000/send-notification', { //change link to this when hosting '/api/send-notification'
+        const res = await fetch('http://localhost:3000/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
