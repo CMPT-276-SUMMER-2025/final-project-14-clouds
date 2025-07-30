@@ -47,20 +47,23 @@ function MapControls() {
       {/* Geolocate */}
       <button
         onClick={() => {
-          map.locate({ setView: false, maxZoom: DEFAULT_ZOOM });
+          map.locate({ setView: false, maxZoom: DEFAULT_ZOOM, enableHighAccuracy: true, timeout: 10000 });
 
           map.once("locationfound", (e) => {
-          map.setView(e.latlng, DEFAULT_ZOOM);
+              const { latlng, accuracy } = e;
+            map.setView(latlng, DEFAULT_ZOOM);
 
-          L.marker(e.latlng).addTo(map);
-          L.circle(e.latlng, { radius: 100 }).addTo(map);
-          L.popup().setLatLng(e.latlng).setContent("You are here!").openOn(map);
-        });
+            const circle = L.circle(latlng, { radius: accuracy }).addTo(map);
+            const marker = L.marker(latlng, { zIndexOffset: 1000 }).addTo(map);
+            marker.bindPopup(`
+            <div style="background-color: rgba(0, 0, 0, 0.75); color: #fff; padding: 8px; border-radius: 4px; max-width: 200px;">
+            <strong>You are here!</strong><br/>
+            Accuracy: ${accuracy.toFixed(0)} m<br/>
+            <em>(Desktop geolocation can be off by tens of meters.)</em>
+            </div>
+          `).openPopup();
+   });
 
-          map.once("locationerror", (e) => {
-          console.error("Location error:", e.message);
-          alert("Unable to find your location. Please enable location services.");
-      });
 
   }}
   className="bg-black/75 p-6 rounded-full shadow-lg hover:outline-none hover:ring-3 hover:ring-blue-500"
