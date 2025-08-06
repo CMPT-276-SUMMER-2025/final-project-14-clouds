@@ -4,8 +4,7 @@ export default async function handler(req, res) {
 
     try {
         const response = await fetch(GTFS_REALTIME_URL);
-        res.setHeader('Content-Type', 'application/octet-stream');
-        res.status(200).send(Buffer.from(data));
+        res.status(200).json(Buffer.from(data));
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch data from translinkapi' });
