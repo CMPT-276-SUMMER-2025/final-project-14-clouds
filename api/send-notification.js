@@ -1,5 +1,14 @@
 import notificationapi from 'notificationapi-node-server-sdk';
 
+
+notificationapi.init(
+  'swb4o3lvct1xlz34ep6xeq8e4m', //client id
+  'wq2nkrv7zdema0as9t8v0isdfg3xlhlxal8ixtn74bbi214iuicjm4hbiu', //client secret
+  {
+    baseURL: 'https://api.ca.notificationapi.com'
+  }
+);
+
 export default async function handler(req, res) {
 
   const data = req.body;

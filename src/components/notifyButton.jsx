@@ -4,8 +4,8 @@ import { IoMdNotifications, IoMdNotificationsOff } from "react-icons/io";
 import "./notifyButton.css";
 function NotificationButton({busNumber, arrivalTime, arriveIn}) { //the notification btton component 
     const notificationapi = NotificationAPIProvider.useNotificationAPIContext();
-    const [enabled, setEnabled] = useState(true);
-    const [schedules, setSchdules] = useState([]);
+    const [enabled, setEnabled] = useState(true); 
+    const [schedules, setSchdules] = useState([]); //saves the scheduled notification event trackingID
 
     const checkPerms = () => {// function to ask for permission for notifications
       if (notificationapi) {
@@ -19,13 +19,15 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) { //the notifica
                 }); //web push while on website
         sendNotification(); //schedule a web push notification, it should work even if user is not on the website 
       } else {
-        cancelNotification(schedules || '');
+        if (schedules){
+          cancelNotification(schedules || '');
+        }
       }
     };
     const cancelNotification = async (trackingId) => {
       if(trackingId) {
         try {
-        const send = await fetch('http://localhost:3000/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
+        const send = await fetch('/api/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -46,7 +48,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) { //the notifica
       const s = arrivalTime.toISOString() || '';
       console.log('schedule: ', s, busNumber);
       try {
-        const res = await fetch('http://localhost:3000/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
+        const res = await fetch('/api/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
