@@ -16,8 +16,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install Dependencies
-        run: npm install
+      - name: Downgrade version
+        run: |
+          npm install -g npm@9
+          npm --version  # Confirm version
+      - name: Clean and Install Dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
       - name: Build
         run: npm run build
       - name: API Keys
