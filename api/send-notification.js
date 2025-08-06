@@ -12,7 +12,6 @@ notificationapi.init(
 export default async function handler(req, res) {
 
   const data = req.body;
-  console.log('Received data:', data);
   if (data.trackingid) {
     try {
       const result = await notificationapi.deleteSchedule(data.trackingid);

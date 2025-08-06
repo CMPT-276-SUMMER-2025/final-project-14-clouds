@@ -38,7 +38,7 @@ export default function NotificationButton({busNumber, arrivalTime, arriveIn}) {
             trackingid: trackingId
           })
         });
-        console.log('removed schedule notification', trackingId)
+
       } catch (error) {
         console.error('Error canceling notification:', error);
       }
@@ -47,7 +47,6 @@ export default function NotificationButton({busNumber, arrivalTime, arriveIn}) {
     const sendNotification = async () => {
       const msg = `${busNumber} arriving now!`;
       const s = arrivalTime.toISOString() || '';
-      console.log('schedule: ', s, busNumber);
       try {
         const res = await fetch('/api/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
           method: 'POST',
@@ -62,7 +61,6 @@ export default function NotificationButton({busNumber, arrivalTime, arriveIn}) {
         });
 
         const data = await res.json();
-        console.log('Notification sent:', data, data.trackingId);
         setSchdules(data.trackingId);
       } catch (error) {
         console.error('Error sending notification:', error);
