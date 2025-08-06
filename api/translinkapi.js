@@ -1,4 +1,4 @@
-import * as gtfsRealtimeBindings from 'gtfs-realtime-bindings';
+import { FeedMessage } from 'gtfs-realtime-bindings';
 
 export default async function handler(req, res) {
     const API_KEY = "DkOQ2I9r9TigGG9qoBLU";
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         const arrayBuffer = await response.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
         
-        const feed = gtfsRealtimeBindings.transit_realtime.FeedMessage.decode(uint8Array);
+        const feed = FeedMessage.decode(uint8Array);
         res.status(200).json(feed);
     } catch (error) {
         console.error(error);
