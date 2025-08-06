@@ -1,7 +1,9 @@
+/* global L */
+
 import { Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { useEffect, useState, useRef } from 'react'
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { useMap } from "react-leaflet";
 import { getAllStops, getStopTimes, getBusName, getRouteLongName } from '../translink/translinkStaticData';
 import { getNextBusesForStop } from '../translink/translinkAPI';
 import filterWorker from './filterWorker?worker'
@@ -24,7 +26,7 @@ const busStopIcon = new L.divIcon({
 export function BusStopPopup({ stopId, stopName }) {
   const [arrivals, setArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState(Date.now());
+  const [_lastUpdated, setLastUpdated] = useState(Date.now());
 
   const refresh = async () => {
     setLoading(true);

@@ -1,3 +1,5 @@
+/* global clients */
+
 // service-worker.js
 self.addEventListener('push', (event) => {
   if (!(self.Notification && self.Notification.permission === 'granted')) {

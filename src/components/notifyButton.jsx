@@ -11,7 +11,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) {
     if (notificationapi) {
         notificationapi.setWebPushOptIn(true);
     }
-    const time = arrivalTime.toISOString();
+    const _time = arrivalTime.toISOString();
     setEnabled(prev => !prev);
     if (enabled) {
       new Notification(`${busNumber} will arrive soon`, {

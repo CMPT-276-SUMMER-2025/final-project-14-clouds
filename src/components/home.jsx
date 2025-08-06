@@ -8,8 +8,8 @@ import { preloadGTFSData } from "../translink/translinkStaticData";
 import { useEffect, useState } from 'react'
 import { BusStops, BusStopPopup } from "./busStops";
 import { RouteStopPopup } from "./routeData";
-import { NotificationAPIProvider, NotificationPopup } from '@notificationapi/react'
-import NotificationButton from './notifyButton'
+import { NotificationAPIProvider } from '@notificationapi/react'
+// import NotificationButton from './notifyButton'
 
 
 const DEFAULT_CENTER = [49.26015840394259, -123.11498748675584];
@@ -53,7 +53,7 @@ function MapControls() {
               const { latlng, accuracy } = e;
             map.setView(latlng, DEFAULT_ZOOM);
 
-            const circle = L.circle(latlng, { radius: accuracy }).addTo(map);
+            const _circle = L.circle(latlng, { radius: accuracy }).addTo(map);
             const marker = L.marker(latlng, { zIndexOffset: 1000 }).addTo(map);
             marker.bindPopup(`
             <div style="background-color: rgba(0, 0, 0, 0.75); color: #fff; padding: 8px; border-radius: 4px; max-width: 200px;">
@@ -185,10 +185,11 @@ function SearchBar() {
       {showResults && searchTerm.trim() && results.length === 0 && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-black/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-700 px-4 py-3 z-50">
           <div className="text-gray-400 text-center">
-            No results found for "{searchTerm}"
+              {`No results found for "${searchTerm}"`}
           </div>
         </div>
       )}
+
 
       {/* bus stop results */}
       {selectedStop?.enabled && !showResults && (

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 export function RouteStopPopup({ routeID, busName }) {
   const [arrivals, setArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState(Date.now());
+  const [, setLastUpdated] = useState(Date.now());
 
   const refresh = async () => {
     setLoading(true);
