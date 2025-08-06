@@ -30,7 +30,7 @@ export default async function handler(req, res) {
           title: data.msg,
           message: data.msg,
           icon: 'https://app.notificationapi.com/mstile-150x150.png?id={{commentId}}',
-          url: 'http://localhost:5173/',
+          url: 'https://vancouver-transit-tracker.vercel.app/',
         },
         schedule: data.schedule
       });
