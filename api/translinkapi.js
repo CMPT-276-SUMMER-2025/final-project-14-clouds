@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
     const API_KEY = "DkOQ2I9r9TigGG9qoBLU";
-    const url = req.body + API_KEY; 
+    const url = req.body.url + API_KEY; 
 
     try {
         const response = await fetch(url);
