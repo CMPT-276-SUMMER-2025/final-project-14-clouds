@@ -2,7 +2,7 @@ import * as gtfsRealtimeBindings from 'gtfs-realtime-bindings';
 
 // THIS IS A TEMP SOLUTION, WE WILL NOT HAVE A HARDCODED API KEY IN FINAL VER
 const API_KEY = "DkOQ2I9r9TigGG9qoBLU";
-const GTFS_REALTIME_URL = `/translink_api/v3/gtfsrealtime?apikey=${API_KEY}`;
+const GTFS_REALTIME_URL = `https://gtfsapi.translink.ca/v3/gtfsrealtime?apikey=${API_KEY}`;
 
 // helper func that gets the GTFS data
 async function fetchRealtimeFeed() {
