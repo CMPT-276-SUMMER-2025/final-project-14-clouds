@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     const GTFS_REALTIME_URL = `https://gtfsapi.translink.ca/v3/gtfsrealtime?apikey=${API_KEY}`;
     const url = req.body + API_KEY;
     try {
-        const response = await fetch(GTFS_REALTIME_URL);
+        const response = await fetch(url);
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         res.setHeader('Content-Type', 'application/octet-stream');
