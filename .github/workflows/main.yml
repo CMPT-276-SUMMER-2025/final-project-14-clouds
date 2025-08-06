@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Downgrade npm
+        run: npm install -g npm@9
       - name: Clean and Install Dependencies
         run: |
           rm -rf node_modules package-lock.json
