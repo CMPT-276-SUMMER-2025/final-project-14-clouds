@@ -18,6 +18,7 @@
     "leaflet.markercluster": "^1.5.3",
     "mapbox-gl": "^3.13.0",
     "maplibre-gl": "^5.6.1",
+    "notificationapi-node-server-sdk": "^2.5.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icon": "^1.0.0",

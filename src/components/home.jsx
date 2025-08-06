@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { MAPBOX_TOKEN } from "../config";
 import { searchStopsAndRoutes, preloadCache } from "../translink/Utils";
 import { preloadGTFSData } from "../translink/translinkStaticData";
+import { preloadAlerts } from "../translink/translinkAPI";
 import { useEffect, useState } from 'react'
 import { BusStops, BusStopPopup } from "./busStops";
 import { RouteStopPopup } from "./routeData";
@@ -218,6 +219,7 @@ export default function Home() {
       try {
         await preloadGTFSData();
         await preloadCache();
+        await preloadAlerts();
         setDataLoaded(true);
       } catch (error) {
         console.error('Error preloading data:', error);

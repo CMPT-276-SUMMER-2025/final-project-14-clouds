@@ -5,7 +5,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import { useEffect, useState, useRef } from 'react'
 import { useMap } from "react-leaflet";
 import { getAllStops, getStopTimes, getBusName, getRouteLongName } from '../translink/translinkStaticData';
-import { getNextBusesForStop } from '../translink/translinkAPI';
+import { getNextBusesForStop, alertCache } from '../translink/translinkAPI';
 import filterWorker from './filterWorker?worker'
 import NotificationButton from './notifyButton'
 
@@ -27,6 +27,7 @@ export function BusStopPopup({ stopId, stopName }) {
   const [arrivals, setArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [_lastUpdated, setLastUpdated] = useState(Date.now());
+  const [expandedAlerts, setExpandedAlerts] = useState({});
 
   const refresh = async () => {
     setLoading(true);
@@ -72,6 +73,13 @@ export function BusStopPopup({ stopId, stopName }) {
     return diff <= 0 ? 'Now' : `in ${diff} min`;
   };
 
+  const toggleAlert = (index) => {
+    setExpandedAlerts(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
   return (
     <div className="bg-black/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-700 overflow-hidden text-white text-sm p-3 space-y-2 min-w-[220px] max-w-[300px]">
       <div className="flex justify-between items-center">
@@ -96,38 +104,59 @@ export function BusStopPopup({ stopId, stopName }) {
 
       {!loading && arrivals.length > 0 && (
         <div className="space-y-2">
-          {arrivals.slice(0, 5).map((arrival, i) => (
-            <div
-              key={i}
-              className="flex justify-between items-center border-b border-gray-700 last:border-0 pb-1"
-            >
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="bg-blue-500/20 text-blue-300 font-medium px-2 py-0.5 rounded-full text-xs inline-block w-fit">
-                    {arrival?.route_short_name || getBusName(arrival.route_id)}
+          {arrivals.slice(0, 5).map((arrival, i) => {
+            // Check if there's an alert for this route
+            const routeAlert = alertCache[arrival.route_id];
+            const isExpanded = expandedAlerts[i];
+            
+            return (
+              <div
+                key={i}
+                className="flex justify-between items-center border-b border-gray-700 last:border-0 pb-1"
+              >
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-blue-500/20 text-blue-300 font-medium px-2 py-0.5 rounded-full text-xs inline-block w-fit">
+                      {arrival?.route_short_name || getBusName(arrival.route_id)}
+                    </span>
+                    {routeAlert && (
+                      <button
+                        onClick={() => toggleAlert(i)}
+                        className="bg-red-600/20 hover:bg-red-500/30 px-2 py-0.5 rounded text-xs text-white font-medium transition-colors flex items-center justify-center gap-1"
+                      >
+                        ⚠️ Alert
+                      </button>
+                    )}
+                    <NotificationButton 
+                    busNumber={arrival?.route_short_name || getBusName(arrival.route_id)} 
+                    arrivalTime={arrival.arrival_time} 
+                    arriveIn={getCountdown(arrival.arrival_time)}/>
+                  </div>
+                  <span className="text-gray-400 text-xs truncate max-w-[150px]">
+                    {arrival?.route_long_name || getRouteLongName(arrival.route_id)}
                   </span>
-                  <NotificationButton 
-                  busNumber={arrival?.route_short_name || getBusName(arrival.route_id)} 
-                  arrivalTime={arrival.arrival_time} 
-                  arriveIn={getCountdown(arrival.arrival_time)}/>
+                  {routeAlert && isExpanded && (
+                    <div className="bg-red-600/20 border border-red-500/30 rounded-sm p-2 mt-1">
+                      <div className="text-red-300 text-xs leading-tight">
+                        {routeAlert}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <span className="text-gray-400 text-xs truncate max-w-[150px]">
-                  {arrival?.route_long_name || getRouteLongName(arrival.route_id)}
-                </span>
+                <div className="flex flex-col text-right">
+                  <span className="text-white text-sm font-semibold">
+                    {arrival.arrival_time.toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </span>
+                  <span className="text-gray-400 text-xs">
+                    {getCountdown(arrival.arrival_time)}
+                  </span>
+                </div>
               </div>
-              <div className="flex flex-col text-right">
-                <span className="text-white text-sm font-semibold">
-                  {arrival.arrival_time.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </span>
-                <span className="text-gray-400 text-xs">
-                  {getCountdown(arrival.arrival_time)}
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

@@ -3,6 +3,9 @@ import * as gtfsRealtimeBindings from 'gtfs-realtime-bindings';
 // THIS IS A TEMP SOLUTION, WE WILL NOT HAVE A HARDCODED API KEY IN FINAL VER
 const API_KEY = "DkOQ2I9r9TigGG9qoBLU";
 const GTFS_REALTIME_URL = `/translink_api/v3/gtfsrealtime?apikey=${API_KEY}`;
+const GTFS_ALERTS_URL = `/translink_api/v3/gtfsalerts?apikey=${API_KEY}`;
+
+export let alertCache = {}
 
 // helper func that gets the GTFS data
 async function fetchRealtimeFeed() {
@@ -19,6 +22,25 @@ async function fetchRealtimeFeed() {
         return feed;
     } catch (error) {
         console.error('Error fetching realtime feed:', error);
+        return null; // not the best, but we fail gracefully now
+    }
+}
+
+// helper func that gets the GTFS alerts
+async function fetchAlertsFeed() {
+    try {
+        const response = await fetch(GTFS_ALERTS_URL);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        
+        const feed = gtfsRealtimeBindings.transit_realtime.FeedMessage.decode(uint8Array);
+        return feed;
+    } catch (error) {
+        console.error('Error fetching alerts feed:', error);
         return null; // not the best, but we fail gracefully now
     }
 }
@@ -115,4 +137,54 @@ export async function getNextStopsForBus(targetRouteId) {
         console.error('Error getting next stops for bus:', error.message);
         return [];
     }
+}
+
+async function getAlerts() {
+    try {
+        const feed = await fetchAlertsFeed();
+        if (!feed || !feed.entity) {
+            console.warn('No alerts feed data available');
+            return;
+        }
+
+        for (const entity of feed.entity) {
+            try {
+                const alert = entity.alert;
+                const translation = alert.headerText?.translation
+
+                if (!translation) continue;
+
+                const headerText = translation?.[0]?.text;
+
+                if (alert.informedEntity) {
+                    for (const informedEntity of alert.informedEntity) {
+                        try {
+                            if (informedEntity.routeId) {
+                                const routeId = informedEntity.routeId;
+
+                                // bit scuffed, only 1 alert per bus stop, there could be more
+                                if (!alertCache[routeId]) {
+                                    alertCache[routeId] = headerText;
+                                }
+                            }
+                        }
+                        catch (error) {
+                            console.warn('Error processing entity:', error.message);
+                        }
+                    }
+                }
+                
+            } catch (entityError) {
+                console.warn('Error processing entity:', entityError.message);
+            }
+        }
+
+    } catch (error) {
+        console.error('Error getting next stops for bus:', error.message);
+        return;
+    }
+}
+
+export async function preloadAlerts() {
+  await Promise.all([getAlerts()]);
 }
