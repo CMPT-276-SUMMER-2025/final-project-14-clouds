@@ -9,6 +9,7 @@ export let alertCache = {}
 
 // helper func that gets the GTFS data
 async function fetchRealtimeFeed() {
+    console.log(GTFS_REALTIME_URL);
     try {
         const response = await fetch('/api/translinkapi', {
             method: 'POST',
