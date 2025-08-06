@@ -1,5 +1,3 @@
-import * as gtfsRealtimeBindings from 'gtfs-realtime-bindings';
-
 // THIS IS A TEMP SOLUTION, WE WILL NOT HAVE A HARDCODED API KEY IN FINAL VER
 const API_KEY = "DkOQ2I9r9TigGG9qoBLU";
 const GTFS_REALTIME_URL = `https://gtfsapi.translink.ca/v3/gtfsrealtime?apikey=${API_KEY}`;
@@ -12,11 +10,7 @@ async function fetchRealtimeFeed() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const arrayBuffer = await response.arrayBuffer();
-        const uint8Array = new Uint8Array(arrayBuffer);
-        
-        const feed = gtfsRealtimeBindings.transit_realtime.FeedMessage.decode(uint8Array);
-        return feed;
+        return response;
     } catch (error) {
         console.error('Error fetching realtime feed:', error);
         return null; // not the best, but we fail gracefully now
