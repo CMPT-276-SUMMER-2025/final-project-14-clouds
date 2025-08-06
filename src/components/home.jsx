@@ -47,12 +47,29 @@ function MapControls() {
       {/* Geolocate */}
       <button
         onClick={() => {
-          map.locate({ setView: true, maxZoom: DEFAULT_ZOOM });
-        }}
-        className="bg-black/75 p-6 rounded-full shadow-lg hover:outline-none hover:ring-3 hover:ring-blue-500"
-      >
-        <MapPinIcon className="w-12 h-12 text-gray-300" />
-      </button>
+          map.locate({ setView: false, maxZoom: DEFAULT_ZOOM, enableHighAccuracy: true, timeout: 10000 });
+
+          map.once("locationfound", (e) => {
+              const { latlng, accuracy } = e;
+            map.setView(latlng, DEFAULT_ZOOM);
+
+            const circle = L.circle(latlng, { radius: accuracy }).addTo(map);
+            const marker = L.marker(latlng, { zIndexOffset: 1000 }).addTo(map);
+            marker.bindPopup(`
+            <div style="background-color: rgba(0, 0, 0, 0.75); color: #fff; padding: 8px; border-radius: 4px; max-width: 200px;">
+            <strong>You are here!</strong><br/>
+            Accuracy: ${accuracy.toFixed(0)} m<br/>
+            <em>(Desktop geolocation can be off by tens of meters.)</em>
+            </div>
+          `).openPopup();
+   });
+
+
+  }}
+  className="bg-black/75 p-6 rounded-full shadow-lg hover:outline-none hover:ring-3 hover:ring-blue-500"
+>
+  <MapPinIcon className="w-12 h-12 text-gray-300" />
+</button>
     </div>
   );
 }
