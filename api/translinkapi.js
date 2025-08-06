@@ -3,10 +3,11 @@ export default async function handler(req, res) {
     const GTFS_REALTIME_URL = `https://gtfsapi.translink.ca/v3/gtfsrealtime?apikey=${API_KEY}`;
 
     try {
-      res.status(200).json(result.data);
+        const response = await fetch(GTFS_REALTIME_URL);
+        res.status(200).json(response.data);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to fetch data from translinkapi' });
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch data from translinkapi' });
     }
 
 }
