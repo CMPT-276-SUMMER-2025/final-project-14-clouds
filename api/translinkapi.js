@@ -1,13 +1,7 @@
 export default async function handler(req, res) {
     const API_KEY = "DkOQ2I9r9TigGG9qoBLU";
-    const GTFS_REALTIME_URL = `https://gtfsapi.translink.ca/v3/gtfsrealtime?apikey=${API_KEY}`;
-    const GTFS_ALERTS_URL = `https://gtfsapi.translink.ca/v3/gtfsalerts?apikey=${API_KEY}`;
-    const type = req.body; 
-    if (type === 'realtime') {
-        url = GTFS_REALTIME_URL;
-    } else {
-        url = GTFS_ALERTS_URL;
-    }
+    const url = req.body + API_KEY; 
+
     try {
         const response = await fetch(url);
         const arrayBuffer = await response.arrayBuffer();
