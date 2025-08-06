@@ -2,15 +2,23 @@ import * as gtfsRealtimeBindings from 'gtfs-realtime-bindings';
 
 // THIS IS A TEMP SOLUTION, WE WILL NOT HAVE A HARDCODED API KEY IN FINAL VER
 const API_KEY = "DkOQ2I9r9TigGG9qoBLU";
-const GTFS_REALTIME_URL = `/translink_api/v3/gtfsrealtime?apikey=${API_KEY}`;
-const GTFS_ALERTS_URL = `/translink_api/v3/gtfsalerts?apikey=${API_KEY}`;
+const GTFS_REALTIME_URL = `https://gtfsapi.translink.ca/v3/gtfsrealtime?apikey=${API_KEY}`;
+const GTFS_ALERTS_URL = `https://gtfsapi.translink.ca/v3/gtfsalerts?apikey=${API_KEY}`;
 
 export let alertCache = {}
 
 // helper func that gets the GTFS data
 async function fetchRealtimeFeed() {
     try {
-        const response = await fetch(GTFS_REALTIME_URL);
+        const response = await fetch('/api/translinkapi', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                url: GTFS_REALTIME_URL
+            })
+        });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -29,7 +37,15 @@ async function fetchRealtimeFeed() {
 // helper func that gets the GTFS alerts
 async function fetchAlertsFeed() {
     try {
-        const response = await fetch(GTFS_ALERTS_URL);
+        const response = await fetch('/api/translinkapi', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                url: GTFS_ALERTS_URL
+            })
+        });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
