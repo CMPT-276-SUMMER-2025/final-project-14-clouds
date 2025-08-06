@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     const url = req.body + API_KEY;
     
     try {
-        const response = await fetch(GTFS_REALTIME_URL);
+        const response = await fetch(url);
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         res.setHeader('Content-Type', 'application/octet-stream');
