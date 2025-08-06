@@ -25,7 +25,7 @@ function NotificationButton({busNumber, arrivalTime, arriveIn}) { //the notifica
     const cancelNotification = async (trackingId) => {
       if(trackingId) {
         try {
-        const send = await fetch('http://localhost:3000/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
+        const send = await fetch('/api/send-notification', { //change link to this when hosting '/api/send-notification' = send-notification.js
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
