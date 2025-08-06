@@ -7,7 +7,7 @@ const GTFS_REALTIME_URL = `/translink_api/v3/gtfsrealtime?apikey=${API_KEY}`;
 // helper func that gets the GTFS data
 async function fetchRealtimeFeed() {
     try {
-        const response = await fetch(GTFS_REALTIME_URL);
+        const response = await fetch('/api/translinkapi'); //switch GTFS_REALTIME_URL to translinkapi in api folder
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
